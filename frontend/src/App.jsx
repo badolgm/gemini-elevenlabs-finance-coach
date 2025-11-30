@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import './App.css'
+import { messages, sttLang } from './i18n'
 
 const apiBase = 'http://localhost:3001'
 
@@ -10,6 +11,7 @@ function App() {
   const [spend, setSpend] = useState(null)
   const [ttsAudio, setTtsAudio] = useState('')
   const [error, setError] = useState('')
+  const [lang, setLang] = useState('en')
 
   useEffect(() => {
     fetch(`${apiBase}/health`).then(r => r.json()).then(setHealth).catch(() => setHealth(''))
@@ -26,7 +28,7 @@ function App() {
       const data = await res.json()
       setIntent(data)
     } catch (e) {
-      setError('No se pudo consultar intención')
+      setError(messages[lang].errorIntent)
     }
   }
 
@@ -37,7 +39,7 @@ function App() {
       const data = await res.json()
       setSpend(data)
     } catch (e) {
-      setError('No se pudo consultar gasto')
+      setError(messages[lang].errorSpend)
     }
   }
 
@@ -52,21 +54,21 @@ function App() {
       const data = await res.json()
       setTtsAudio(data.audioBase64 || '')
     } catch (e) {
-      setError('No se pudo convertir a audio')
+      setError(messages[lang].errorTts)
     }
   }
 
-  const [inputText, setInputText] = useState('Cuánto gasté en dining este mes')
+  const [inputText, setInputText] = useState('How much did I spend on dining this month?')
   const toggleMic = async () => {
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition
-    if (!SR) { setError('STT no disponible en este navegador'); return }
+    if (!SR) { setError(messages[lang].errorSttUnavailable); return }
     if (!recording) {
       const rec = new SR()
-      rec.lang = 'es-ES'
+      rec.lang = sttLang[lang]
       rec.continuous = false
       rec.interimResults = false
       rec.onresult = e => { const t = e.results[0][0].transcript; setInputText(t) }
-      rec.onerror = () => setError('Error en STT local')
+      rec.onerror = () => setError(messages[lang].errorStt)
       rec.onend = () => setRecording(false)
       rec.start()
       setRecording(true)
@@ -77,14 +79,19 @@ function App() {
 
   return (
     <div className="container">
-      <h1>Conversational Financial Assistant</h1>
-      <div className="status">Backend: {typeof health === 'object' ? health.status : 'offline'}</div>
+      <h1>{messages[lang].title}</h1>
+      <div className="status">{messages[lang].backendStatus}: {typeof health === 'object' ? health.status : 'offline'}</div>
       <div className="controls">
-        <button onClick={toggleMic}>{recording ? 'Detener' : 'Micrófono'}</button>
-        <input value={inputText} onChange={e => setInputText(e.target.value)} className="input" />
-        <button onClick={testIntent}>Probar Intención</button>
-        <button onClick={testSpend}>Probar Gasto</button>
-        <button onClick={testTTS}>Probar TTS</button>
+        <button onClick={toggleMic}>{recording ? messages[lang].micStop : messages[lang].micStart}</button>
+        <input value={inputText} onChange={e => setInputText(e.target.value)} className="input" placeholder={messages[lang].inputPlaceholder} />
+        <button onClick={testIntent}>{messages[lang].testIntent}</button>
+        <button onClick={testSpend}>{messages[lang].testSpend}</button>
+        <button onClick={testTTS}>{messages[lang].testTTS}</button>
+        <label>{messages[lang].language}: </label>
+        <select value={lang} onChange={e => setLang(e.target.value)}>
+          <option value="en">{messages[lang].english}</option>
+          <option value="es">{messages[lang].spanish}</option>
+        </select>
       </div>
       {intent && <pre className="panel">{JSON.stringify(intent, null, 2)}</pre>}
       {spend && <pre className="panel">{JSON.stringify(spend, null, 2)}</pre>}

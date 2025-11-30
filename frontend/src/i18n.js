@@ -1,0 +1,40 @@
+export const messages = {
+  en: {
+    title: 'Conversational Financial Assistant',
+    backendStatus: 'Backend',
+    micStart: 'Microphone',
+    micStop: 'Stop',
+    inputPlaceholder: 'Say or type your request...',
+    testIntent: 'Test Intent',
+    testSpend: 'Test Spend',
+    testTTS: 'Test TTS',
+    errorSttUnavailable: 'STT not available in this browser',
+    errorStt: 'Error in local STT',
+    errorIntent: 'Could not fetch intent',
+    errorSpend: 'Could not fetch spend',
+    errorTts: 'Could not generate audio',
+    language: 'Language',
+    english: 'English',
+    spanish: 'Spanish',
+  },
+  es: {
+    title: 'Asistente Financiero Conversacional',
+    backendStatus: 'Backend',
+    micStart: 'Micrófono',
+    micStop: 'Detener',
+    inputPlaceholder: 'Di o escribe tu solicitud...',
+    testIntent: 'Probar Intención',
+    testSpend: 'Probar Gasto',
+    testTTS: 'Probar TTS',
+    errorSttUnavailable: 'STT no disponible en este navegador',
+    errorStt: 'Error en STT local',
+    errorIntent: 'No se pudo consultar intención',
+    errorSpend: 'No se pudo consultar gasto',
+    errorTts: 'No se pudo convertir a audio',
+    language: 'Idioma',
+    english: 'Inglés',
+    spanish: 'Español',
+  }
+}
+
+export const sttLang = { en: 'en-US', es: 'es-ES' }

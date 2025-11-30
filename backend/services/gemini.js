@@ -2,7 +2,7 @@ const fetch = require('node-fetch')
 
 async function analyzeText(apiKey, text) {
   const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + apiKey
-  const prompt = `Clasifica la intención financiera y devuelve JSON con {intent, entities:{category,period,amount,date}}. Texto: "${text}"`
+  const prompt = `You are a financial NLU. Input may be English or Spanish. Return ONLY a JSON object with keys {intent, entities:{category,period,amount,date}} based on: "${text}"`
   const body = {
     contents: [{ parts: [{ text: prompt }] }]
   }
