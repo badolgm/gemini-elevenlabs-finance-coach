@@ -57,12 +57,30 @@ function App() {
   }
 
   const [inputText, setInputText] = useState('Cuánto gasté en dining este mes')
+  const toggleMic = async () => {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition
+    if (!SR) { setError('STT no disponible en este navegador'); return }
+    if (!recording) {
+      const rec = new SR()
+      rec.lang = 'es-ES'
+      rec.continuous = false
+      rec.interimResults = false
+      rec.onresult = e => { const t = e.results[0][0].transcript; setInputText(t) }
+      rec.onerror = () => setError('Error en STT local')
+      rec.onend = () => setRecording(false)
+      rec.start()
+      setRecording(true)
+    } else {
+      setRecording(false)
+    }
+  }
+
   return (
     <div className="container">
       <h1>Conversational Financial Assistant</h1>
       <div className="status">Backend: {typeof health === 'object' ? health.status : 'offline'}</div>
       <div className="controls">
-        <button onClick={() => setRecording(r => !r)}>{recording ? 'Detener' : 'Micrófono'}</button>
+        <button onClick={toggleMic}>{recording ? 'Detener' : 'Micrófono'}</button>
         <input value={inputText} onChange={e => setInputText(e.target.value)} className="input" />
         <button onClick={testIntent}>Probar Intención</button>
         <button onClick={testSpend}>Probar Gasto</button>

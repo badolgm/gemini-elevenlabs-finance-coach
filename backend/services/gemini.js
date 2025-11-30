@@ -21,4 +21,16 @@ async function analyzeText(apiKey, text) {
   return parsed
 }
 
+async function generateJson(apiKey, prompt) {
+  const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + apiKey
+  const body = { contents: [{ parts: [{ text: prompt }] }] }
+  const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+  if (!res.ok) return { error: 'gemini_error', status: res.status }
+  const data = await res.json()
+  const txt = data?.candidates?.[0]?.content?.parts?.[0]?.text || ''
+  try { return JSON.parse(txt) } catch { return { raw: txt } }
+}
+
+module.exports = { analyzeText, generateJson }
+
 module.exports = { analyzeText }

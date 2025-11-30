@@ -2,10 +2,15 @@ const express = require('express');
 const cors = require('cors');
 const cfg = require('./config');
 const { analyzeText } = require('./services/gemini');
+const { analyzeRisk } = require('./services/risk');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 const { tts, stt } = require('./services/elevenlabs');
 
 const app = express();
 app.use(cors());
+app.use(helmet());
+app.use(rateLimit({ windowMs: 60 * 1000, max: 60 }));
 app.use(express.json());
 
 const PORT = cfg.port;
@@ -46,6 +51,19 @@ app.post('/api/transaction', (req, res) => {
 app.get('/api/advice', (req, res) => {
   res.json({ advice: 'Consider reducing dining expenses this week to stay within budget.' });
 });
+
+app.post('/api/risk', async (req, res) => {
+  const { features } = req.body || {}
+  if (!cfg.geminiKey) {
+    return res.status(501).json({ error: 'Gemini API key not configured' })
+  }
+  try {
+    const r = await analyzeRisk(cfg.geminiKey, features || {})
+    return res.json(r)
+  } catch (e) {
+    return res.status(500).json({ error: 'Risk analysis failed' })
+  }
+})
 
 app.post('/api/tts', async (req, res) => {
   const { text, voiceId } = req.body || {}
