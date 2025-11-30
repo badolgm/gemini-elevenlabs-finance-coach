@@ -1,5 +1,13 @@
 MASTERDOC: Conversational Financial Assistant (CFA)
 
+English Summary
+- Purpose: Voice-first financial coach for the ElevenLabs challenge in the AI Partner Catalyst (Google Cloud).
+- Capabilities: spend queries, budgeting via voice, transaction logging, risk insights, and proactive advice.
+- Multilingual: English/Spanish UI and prompts; STT/TTS configurable per locale; assistant persona selectable.
+- Accessibility: screen-reader friendly, voice-first interaction, low-vision/cognitive load optimized.
+- Security: keys via Secret Manager/.env, minimal PII, rate limiting, headers hardening.
+- Compliance: public repo, OSI license, demo video ≤ 3 min, deployable URL.
+
 1. Alcance y Objetivo
 - App de asistencia financiera conversacional para el reto ElevenLabs del AI Partner Catalyst.
 - Capacidades: consultas de gastos, presupuestos por voz, registro de transacciones y consejos personalizados.
