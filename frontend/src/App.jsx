@@ -8,6 +8,7 @@ function App() {
   const [health, setHealth] = useState('')
   const [intent, setIntent] = useState(null)
   const [spend, setSpend] = useState(null)
+  const [ttsAudio, setTtsAudio] = useState('')
   const [error, setError] = useState('')
 
   useEffect(() => {
@@ -40,6 +41,21 @@ function App() {
     }
   }
 
+  const testTTS = async () => {
+    setError('')
+    try {
+      const res = await fetch(`${apiBase}/api/tts`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: inputText })
+      })
+      const data = await res.json()
+      setTtsAudio(data.audioBase64 || '')
+    } catch (e) {
+      setError('No se pudo convertir a audio')
+    }
+  }
+
   const [inputText, setInputText] = useState('Cuánto gasté en dining este mes')
   return (
     <div className="container">
@@ -50,9 +66,11 @@ function App() {
         <input value={inputText} onChange={e => setInputText(e.target.value)} className="input" />
         <button onClick={testIntent}>Probar Intención</button>
         <button onClick={testSpend}>Probar Gasto</button>
+        <button onClick={testTTS}>Probar TTS</button>
       </div>
       {intent && <pre className="panel">{JSON.stringify(intent, null, 2)}</pre>}
       {spend && <pre className="panel">{JSON.stringify(spend, null, 2)}</pre>}
+      {ttsAudio && <audio controls src={`data:audio/mpeg;base64,${ttsAudio}`} />}
       {error && <div className="error">{error}</div>}
     </div>
   )
