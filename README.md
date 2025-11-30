@@ -69,7 +69,7 @@
 - Backend:
   - `cd backend`
   - `npm install`
-  - `npm run dev` → `http://localhost:3001/` (`/health`, `/api/*` stubs)
+  - `npm run dev` → `http://localhost:3001/` (`/health`, `/api/*`)
 - Frontend:
   - `cd frontend`
   - `npm install`
@@ -77,6 +77,13 @@
 - Notas:
   - Las rutas de API están stubbed para validar flujo end-to-end.
   - Claves y configuración se añadirán con `Secret Manager`/`.env` antes de integrar servicios reales.
+
+**Environment**
+- Configurar variables en `.env` (o usar `Secret Manager`):
+  - `PORT=3001`
+  - `GEMINI_API_KEY=<valor>`
+  - `ELEVENLABS_API_KEY=<valor>`
+ - Referencia: `./.env.example`
 
 **Hackathon Compliance**
 - Repositorio público con licencia OSI visible y detectable.

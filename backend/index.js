@@ -1,11 +1,12 @@
 const express = require('express');
 const cors = require('cors');
+const cfg = require('./config');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-const PORT = process.env.PORT || 3001;
+const PORT = cfg.port;
 
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', service: 'cfa-backend' });
@@ -14,6 +15,9 @@ app.get('/health', (req, res) => {
 // Stub endpoints (alineados al MASTERDOC)
 app.post('/api/intent', (req, res) => {
   const { text } = req.body || {};
+  if (!cfg.geminiKey) {
+    return res.status(501).json({ error: 'Gemini API key not configured', input: text });
+  }
   res.json({ intent: 'query_spend', entities: { category: 'dining', period: 'month' }, input: text });
 });
 
@@ -41,4 +45,3 @@ app.listen(PORT, () => {
   console.log(`Server listening on ${url}`);
   console.log(`Preview URL: ${url}`);
 });
-
