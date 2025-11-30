@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import { messages, sttLang } from './i18n'
+import Dashboard from './components/Dashboard'
 
 const apiBase = 'http://localhost:3001'
 
@@ -97,6 +98,7 @@ function App() {
       {spend && <pre className="panel">{JSON.stringify(spend, null, 2)}</pre>}
       {ttsAudio && <audio controls src={`data:audio/mpeg;base64,${ttsAudio}`} />}
       {error && <div className="error">{error}</div>}
+      <Dashboard />
     </div>
   )
 }

@@ -34,7 +34,11 @@ export const messages = {
     language: 'Idioma',
     english: 'Inglés',
     spanish: 'Español',
+    dashboardSpendByCategory: 'Gasto por Categoría',
+    dashboardMonthlyForecast: 'Pronóstico Mensual',
   }
 }
 
 export const sttLang = { en: 'en-US', es: 'es-ES' }
+    dashboardSpendByCategory: 'Spend by Category',
+    dashboardMonthlyForecast: 'Monthly Forecast',

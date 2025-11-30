@@ -38,6 +38,17 @@ app.get('/api/spend', (req, res) => {
   res.json({ category, from, to, total: 123.45 });
 });
 
+app.get('/api/spend/breakdown', (req, res) => {
+  const data = [
+    { category: 'dining', total: 123.45 },
+    { category: 'groceries', total: 256.7 },
+    { category: 'transport', total: 78.9 },
+    { category: 'utilities', total: 140.2 },
+    { category: 'entertainment', total: 95.1 },
+  ]
+  res.json({ items: data })
+})
+
 app.post('/api/budget', (req, res) => {
   const { category, monthlyLimit } = req.body || {};
   res.json({ ok: true, category, monthlyLimit });
@@ -51,6 +62,19 @@ app.post('/api/transaction', (req, res) => {
 app.get('/api/advice', (req, res) => {
   res.json({ advice: 'Consider reducing dining expenses this week to stay within budget.' });
 });
+
+app.get('/api/forecast', (req, res) => {
+  const points = [
+    { day: 1, total: 50 },
+    { day: 5, total: 120 },
+    { day: 10, total: 210 },
+    { day: 15, total: 310 },
+    { day: 20, total: 420 },
+    { day: 25, total: 530 },
+    { day: 30, total: 640 }
+  ]
+  res.json({ points })
+})
 
 app.post('/api/risk', async (req, res) => {
   const { features } = req.body || {}
