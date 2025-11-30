@@ -20,7 +20,7 @@ function App() {
       const res = await fetch(`${apiBase}/api/intent`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: 'Cuánto gasté en dining este mes' })
+        body: JSON.stringify({ text: inputText })
       })
       const data = await res.json()
       setIntent(data)
@@ -40,12 +40,14 @@ function App() {
     }
   }
 
+  const [inputText, setInputText] = useState('Cuánto gasté en dining este mes')
   return (
     <div className="container">
       <h1>Conversational Financial Assistant</h1>
       <div className="status">Backend: {typeof health === 'object' ? health.status : 'offline'}</div>
       <div className="controls">
         <button onClick={() => setRecording(r => !r)}>{recording ? 'Detener' : 'Micrófono'}</button>
+        <input value={inputText} onChange={e => setInputText(e.target.value)} className="input" />
         <button onClick={testIntent}>Probar Intención</button>
         <button onClick={testSpend}>Probar Gasto</button>
       </div>

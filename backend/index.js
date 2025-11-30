@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const cfg = require('./config');
+const { analyzeText } = require('./services/gemini');
 
 const app = express();
 app.use(cors());
@@ -13,12 +14,17 @@ app.get('/health', (req, res) => {
 });
 
 // Stub endpoints (alineados al MASTERDOC)
-app.post('/api/intent', (req, res) => {
+app.post('/api/intent', async (req, res) => {
   const { text } = req.body || {};
   if (!cfg.geminiKey) {
     return res.status(501).json({ error: 'Gemini API key not configured', input: text });
   }
-  res.json({ intent: 'query_spend', entities: { category: 'dining', period: 'month' }, input: text });
+  try {
+    const result = await analyzeText(cfg.geminiKey, text || '')
+    return res.json(result)
+  } catch (e) {
+    return res.status(500).json({ error: 'Gemini call failed' })
+  }
 });
 
 app.get('/api/spend', (req, res) => {
