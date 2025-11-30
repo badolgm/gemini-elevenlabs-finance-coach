@@ -94,6 +94,46 @@
 **Documentation**
 - Especificación completa en `MASTERDOC.md` (arquitectura, UML, DB, flujos, pruebas, seguridad).
 
+**Historias de Usuario (20)**
+- HU.1: Consultar gasto por categoría/periodo.
+- HU.2: Definir presupuesto mensual por voz.
+- HU.3: Consejos de ahorro basados en hábitos.
+- HU.4: Registrar transacción hablada.
+- HU.5: Voz amigable y profesional.
+- HU.6: Importar transacciones (CSV/Excel/API mock).
+- HU.7: Metas de ahorro y seguimiento por voz.
+- HU.8: Alertas proactivas al acercarse al límite de gasto.
+- HU.9: Detección de anomalías en gastos.
+- HU.10: Soporte multimoneda y conversión.
+- HU.11: Desglose por comerciantes y tendencias.
+- HU.12: Recordatorios de pagos por voz.
+- HU.13: Exportar reportes en CSV y PDF.
+- HU.14: Personalizar voz y personalidad del asistente.
+- HU.15: Modo manos libres con wake‑word.
+- HU.16: Historial de conversación y transcripción.
+- HU.17: Panel de privacidad (opt‑in/out de telemetría).
+- HU.18: Categorías personalizadas y auto‑clasificación.
+- HU.19: Optimización de presupuesto basada en patrones.
+- HU.20: Sugerencias de ahorro semanal (habit formation).
+
+**System Diagram (Resumen)**
+
+```mermaid
+flowchart LR
+  U[Usuario] -- Voz --> EL[ElevenLabs Agents]
+  EL -- STT --> FE[Frontend Web]
+  FE -- Intent/Prompt --> BE[Cloud Run/Functions]
+  BE -- LLM --> G[Gemini / Vertex AI]
+  BE -- Persistencia --> FS[Firestore]
+  BE -- Telemetría --> TM[Telemetry]
+  EL -- TTS --> U
+```
+
+**Enlaces del Proyecto**
+- Masterdoc: `./MASTERDOC.md`
+- License: `./LICENSE`
+- Hackathon (Devpost): `https://ai-partner-catalyst.devpost.com/`
+
 **License**
 - MIT. Ver sección `License` y archivo `LICENSE`.
 
